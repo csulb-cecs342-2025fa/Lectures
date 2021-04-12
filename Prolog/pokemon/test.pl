@@ -16,10 +16,9 @@ learns(pikachu, thunderbolt, level(36)). % Pikachu learns Thunderbolt at level 3
 learns(pikachu, thunderpunch, tm(5)).
 
 
-
 % Simple rules.
 
-sibling(X, Y) :- X \= Y, evolves(Parent, X), evolves(Parent, Y). % the comma means "and". "\=" means "does not unify".
+sibling(X, Y) :- evolves(Parent, X), evolves(Parent, Y), X \= Y. % the comma means "and". "\=" means "does not unify".
 
 canUseItem(Pokemon, tm(X)) :- learns(Pokemon, _, tm(X)). % _ is "don't care", yet again.
 
