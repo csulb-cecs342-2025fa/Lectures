@@ -6,8 +6,8 @@ int a;
 
 int f(int a) {
    if (a > 10) {
-      double b = 3.14;
-      return (int)(a * b);
+      int b = 3;
+      return g(a * b);
    }
    return a;
 }
@@ -17,9 +17,8 @@ int g(double a) {
 }
 
 int main() {
-   a = 10;
-   printf("%d\n", f(5));
-   printf("%d\n", g(5.0));
+   printf("%d", f(5));
+   return 0;
 }
 
 /* Questions:

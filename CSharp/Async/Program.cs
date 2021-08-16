@@ -25,10 +25,12 @@ namespace Async
 			Console.WriteLine("Writing log...");
 			Thread.Sleep(2000);
 		}
+
 		static async Task Main(string[] args)
 		{
-			var x = Task.Run(CheckLoginInformation);
+			var x = Task.Run(CheckLoginInformation);  // Task<bool>
 			var y = Task.Run(DownloadAvatar);
+
 			bool result = await x;
 			string url = await y;
 

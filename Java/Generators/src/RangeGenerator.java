@@ -38,16 +38,14 @@ public class RangeGenerator implements Iterable<Integer> {
    
    // Demo using a RangeGenerator.
    public static void main(String[] args) {
-      RangeGenerator range = new RangeGenerator(0, 50, 5);
-      for (Integer i : range) {
-         System.out.println(i);
-      }
-
+      RangeGenerator range = new RangeGenerator(0, 5000000, 5);
+     
       // Reminder: the above compiles to this:
       Iterator<Integer> itr = range.iterator();
       while (itr.hasNext()) {
          Integer i = itr.next();
          System.out.println(i);
+         break;
       }
    }
 }
