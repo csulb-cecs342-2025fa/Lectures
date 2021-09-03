@@ -66,14 +66,12 @@ let doubleString (s : string) =
 
 // Write a function that returns the absolute value of an integer.
 let absoluteValue x =
-    let whoa = if x < 0 then
-                   -x
-               elif x = 0 then
-                   0
-               else
-                   x
-
-    whoa
+    if x < 0 then
+        -x
+    elif x = 0 then
+        0
+    else
+        x
 
 
 // Lesson: "if" is an expression, not a statement.
