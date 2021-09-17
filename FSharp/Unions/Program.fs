@@ -66,8 +66,29 @@ match submitWork 0.7 with
 | RejectMessage m -> printfn "Work was rejected: %s" m
 
 
-// Discriminated unions can be used in surprisingly powerful ways. Since Chanon
-// loves binary trees, let's build one in F#!
+// Unions can cleanly and beautifully represent computations that can fail.
+// Division can fail if the denominator is 0. We can't guarantee that the result
+// of dividing two integers is an integer; it could be Undefined, which is not an int.
+type DivisionResult =
+    | Quotient of int
+    | Undefined
+
+// so a DivisionResult is either a Quotient integer, or Undefined.
+// We can now write a "safe divide":
+let safeDivide dividend divisor =
+    match divisor with
+    | 0 -> Undefined
+    | _ -> Quotient (dividend / divisor)
+
+let good = safeDivide 10 3 // good = Quotient 3
+let bad = safeDivide 10 0  // bad  = Undefined
+
+
+
+
+
+// Discriminated unions can be used in surprisingly powerful ways. 
+// I know you love binary trees... let's build one in F#!
 
 // A binary tree is either empty, or has: a value; a tree to its left; and a tree to its right.
 type BinaryTree =
@@ -83,7 +104,17 @@ let exampleTree = Node (10,
                        Node (15, Empty, Empty)
                   )
 
-let rec findMax tree =
+let isEmpty tree =
+    match tree with
+    | Empty -> true
+    | _     -> false
+
+let rec height tree =
+    match tree with 
+    | Empty -> -1
+    | Node (_, left, right) -> 1 + max (height left) (height right)
+
+let rec findMaxValue tree =
     match tree with
     | Empty              -> System.Int32.MinValue
     | Node (i, _, Empty) -> i
