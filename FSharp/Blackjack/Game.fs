@@ -136,7 +136,7 @@ let makeDeck () =
                                    | 0 -> Spades
                                    | 1 -> Clubs
                                    | 2 -> Diamonds
-                                   | 3 -> Hearts
+                                   | _ -> Hearts
                            {suit = s; kind = i % 13 + 1})
 
 
@@ -286,7 +286,7 @@ let manyGames n playerStrategy =
         
 // PLAYER STRATEGIES
 // Returns a list of legal player actions given their current hand.
-let legalPlayerActions playerHand =
+let legalPlayerActions (playerHand : Card list) =
     let legalActions = [Hit; Stand; DoubleDown; Split]
     // One boolean entry for each action; True if the corresponding action can be taken at this time.
     let requirements = [
@@ -329,18 +329,8 @@ let rec interactivePlayerStrategy gameState =
            interactivePlayerStrategy gameState
 
     
-open MyBlackjack
-
 [<EntryPoint>]
 let main argv =
-    //MyBlackjack.makeDeck() 
-    //|> MyBlackjack.shuffleDeck
-    //|> MyBlackjack.newGame
-    //|> MyBlackjack.oneGame MyBlackjack.recklessPlayer
-    //|> printfn "%A"
-
-    MyBlackjack.manyGames 1000 MyBlackjack.coinFlipPlayerStrategy
-    |> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
 
     0 // return an integer exit code
