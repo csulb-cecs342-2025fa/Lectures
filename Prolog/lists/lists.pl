@@ -8,8 +8,20 @@ mylength([_|T], L) :- mylength(T, S), L is S + 1.
 
 % Check if the sum of the elements of a list matches the given value.
 % int list -> int
+
 sum([], 0).
-sum([H|T], S) :- sum(T, D), S is D + H.
+sum([H | T], X) :- sum(T, Y), X is Y + H.
+
+isOrdered([]).
+isOrdered([_]).
+isOrdered([A, B | T]) :- A =< B, isOrdered([B| T]).
+
+%   >= =<
+
+% [0]
+% [1]
+% [1, 2, ....]
+% []
 
 
 
@@ -81,7 +93,46 @@ quicksort([], []).
 partition([], _, [], []).
 
 % The first element belongs in Littles if it is <= the pivot.
-partition([X|Xs], Y, [X|Ls], Bs) :- X =< Y, partition(Xs, Y, Ls, Bs).
+partition([X|Xs], Pivot, Littles, Bigs) :-
+	 X =< Pivot,
+	 partition(Xs, Pivot, Ls, Bs),
+	 Littles = [X | Ls],
+	 Bigs = Bs.
 
 % The first element belongs in Bigs if it is > the pivot.
-partition([X|Xs], Y, Ls, [X|Bs]) :- X > Y, partition(Xs, Y, Ls, Bs).
+partition([X|Xs], Pivot, Littles, Bigs) :- 
+	X > Pivot, 
+	partition(Xs, Pivot, Ls, Bs),
+	Littles = Ls,
+	Bigs = [X | Bs].
+
+
+
+% Merge: Given two sorted lists, what do they merge into?
+merge(L1, [], L1).
+merge([], L2, L2).
+merge([H1|T1], [H2|T2], [HR|TR]) :- 
+	H1 =< H2,
+	merge(T1, [H2|T2], MR),
+	HR = H1,
+	TR = MR.
+merge([H1|T1], [H2|T2], [HR|TR]) :- 
+	H1 > H2,
+	merge([H1|T1], T2, MR),
+	HR = H2,
+	TR = MR.
+
+% Merge sort: split the List into two halves of equal length. Merge sort both halves,
+% then merge into the answer.
+mergeSort([], []).
+mergeSort([X], [X]).
+mergeSort(List, Sorted) :-
+	length(List, N),
+	FirstLength is N // 2,
+	SecondLength is N - FirstLength,
+	length(FirstHalf, FirstLength),
+	length(SecondHalf, SecondLength),
+	append(FirstHalf, SecondHalf, List),
+	mergeSort(FirstHalf, FirstSorted),
+	mergeSort(SecondHalf, SecondSorted),
+	merge(FirstSorted, SecondSorted, Sorted).
