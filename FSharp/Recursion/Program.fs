@@ -1,5 +1,19 @@
 ﻿// Tail recursion.
 
+
+let rec fact n =
+    match n with 
+    | 1 -> 1
+    | _ -> n * fact (n - 1)
+
+let rec factTail n acc =
+    match n with 
+    | 1 -> acc
+    | _ -> factTail (n - 1) (n * acc)
+
+
+
+
 // sumList: return the sum of the values in a list.
 let rec sumList coll =
     match coll with 
@@ -7,6 +21,9 @@ let rec sumList coll =
     | h :: t -> h + sumList t
 // what type is h? what type is t?
 // what is the type of sumList?
+
+// int list -> int
+
 
 // Is this function tail recursive?
 
@@ -17,6 +34,8 @@ let rec sumList coll =
 // an inner function that we start ourselves.
 
 let sumListTail coll =
+
+
     // The parameter we introduce is called an "accumulator". It represents "the answer to the question prior to this iteration.";
     // AKA, "what have we already concluded about the values that came before?"
     // In this case, acc is "the sum of the elements that we already iterated over."
@@ -46,13 +65,17 @@ let rec count x coll =
 
 let countTail x coll =
     
-    // Start by defining the accumulator: acc represents...
-    let countTail' x coll acc =
-        0
+    // Start by defining the accumulator: acc represents the number of x values that come before this point.
+    let rec countTail' x coll acc =
+        match coll with 
+        | [] -> acc
+        | h :: t when h = x -> countTail' x t (acc + 1)
+        | _ :: t            -> countTail' x t acc
+
         // Then match coll and decide what to do...
 
     // Then initialize the recursion with the correct starting accumulator.
-    0
+    countTail' x coll 0
 
 // Determine the index of the first occurrence of x.
 let rec indexOf x coll =

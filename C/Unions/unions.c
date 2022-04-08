@@ -11,12 +11,22 @@ union Contact {
 	long long phoneNumber;
 };
 
+struct TaggedContact {
+	union Contact theContact;
+	enum ContactType {Email, Ext, Phone} contactType;
+};
+
 int main() {
 	printf("Contact union is %d bytes\n", sizeof(union Contact));
 	// The union is the same size as the largest of its fields, regardless of which field is actually used.
 
 	union Contact neal;
 	neal.email = "neal.terrell@csulb.edu";
+	struct TaggedContact n;
+	n.theContact = neal;
+	n.contactType = Email;
+
+	
 	printf("neal is at \t\t%p\n", &neal);
 	printf("extension is at \t%p\twith value %hd\n", &neal.extension, neal.extension);
 	printf("phoneNumber is at \t%p\twith value %lld\n", &neal.phoneNumber, neal.phoneNumber);

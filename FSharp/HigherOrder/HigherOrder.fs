@@ -14,6 +14,8 @@ let rec findFirstEven coll =
 |> findFirstEven
 |> printfn "first even: %d"
 
+// int list -> int
+
 // How about... findFirstOdd?
 let rec findFirstOdd coll =
     match coll with 
@@ -40,9 +42,22 @@ let rec findFirst pred coll =
     | h :: _ when pred h -> h
     | _ :: t             -> findFirst pred t
 
-// What is the type of findFirst?
-// ('a->bool) -> 'a list -> 'a
+// ('a->bool)->'a list->'a
+
 // Your first higher-order function!
+
+
+findFirst (fun x -> x % 2 = 0) [1; 3; 5; 6; 7; 8; 10; 11]
+
+findFirst (fun x -> x % 2 = 1) [1; 3; 5; 6; 7; 8; 10; 11]
+
+
+
+
+
+
+
+
 
 
 // Now we can recreate our very-specific functions (and more!) with a higher order function.
@@ -78,9 +93,25 @@ let rec findFirst pred coll =
 
 // 1. Filter: given a predicate and a list of values, return a new list of only those values 
 // that pass the predicate.
-["Neal"; "Anthony"; "Mehrdad"; "Claus"; "Jaclyn"]
-|> List.filter (fun s -> String.length s > 5)
+
+List.filter (fun s -> String.length s > 5) ["Neal"; "Anthony"; "Mehrdad"; "Claus"; "Jaclyn"]
 |> printfn "All long names: %O"
+
+// type of List.filter
+// ('a->bool) -> 'a list-> 'a list
+// 
+
+
+
+
+
+
+
+
+
+
+
+
 
 // What type is List.filter?
 // ('a->bool) -> 'a list -> 'a list
@@ -91,10 +122,22 @@ let rec findFirst pred coll =
 // To filter a list, we test the head. If it passes the predicate, we keep it, and follow it
 // with the filter of the tail.
 let rec filter pred coll =
-    match coll with 
-    | []                 -> []
-    | h :: t when pred h -> h :: (filter pred t)
+    match coll with
+    | [] -> []
+    | h :: t when pred h -> h :: filter pred t
     | _ :: t             -> filter pred t
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Can we write it with TAIL recursion? 

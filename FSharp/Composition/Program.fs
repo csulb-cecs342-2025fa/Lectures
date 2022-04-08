@@ -119,4 +119,6 @@ let folderSizeComposed = // NO PARAMETER!!
     // getFiles (a string) and returns the same output as the 
     // final Array.sum (an int64)
 
-folderSizeComposed "." |> printfn "%d bytes in the current working directory, %s" <| Environment.CurrentDirectory
+folderSizeComposed "." 
+|> printfn "%d bytes in the current working directory, %s" 
+<| Environment.CurrentDirectory

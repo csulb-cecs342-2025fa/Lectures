@@ -95,32 +95,41 @@ list1
 |> printfn "%d" 
 
 
-// We can now write very succinct and powerful functions on lists, combining
-// generics and... matching!
-let isEmpty coll = 
-    match coll with
-    | [] -> true // an empty list is empty
-    // can match list patterns; [x] matches any one-element list. (but not one of 2+ elements).
-    // | [x] -> false // a one-element list is not empty
-    // as always, _ matches anything
-    | _ -> false
 
-    // contains 10 [5; 6; 10; 12]
-let rec contains x coll =
-    match coll with
-    | [] -> false
-    | h :: t -> h = x || contains x t
-
-
-
-
-
-// And once recursion gets involved...
-let rec lastElement coll =
+let rec contains coll x =
     match coll with 
-    | [] -> raise (System.InvalidOperationException("Can't get the last of an empty list"))
-    | [x] -> x
-    // In pattern matching, "x :: y" will match a list of 1+ elements.
-    // x will be the head value of the list; y will be the tail list.
-    | h :: t -> lastElement t
+    | [] -> false
+    | h :: _ when x = h -> true
+    | _ :: t -> contains t x
+    (*if coll = [] then  
+        false
+    elif List.head coll = x then
+        true
+    else
+        contains (List.tail coll) x*)
 
+let rec length coll =
+    match coll with 
+    | [] -> 0
+    | _ :: t -> 1 + length t
+
+
+let rec getIndexRecursive coll n =
+    match n with 
+    | 0 -> List.head coll
+    | _ -> getIndexRecursive (List.tail coll) (n - 1)
+
+
+let rec indexOf coll x =
+    match coll with 
+    | [] -> -1
+    | h :: _ when h = x -> 0
+    | _ :: t -> let r = indexOf t x
+                if r = -1 then -1
+                else r + 1
+
+let rec reverse coll =
+    match coll with 
+    | [] -> []
+    | [x] -> [x]
+    | h :: t -> reverse t @ [h]

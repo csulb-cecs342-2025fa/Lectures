@@ -2,10 +2,14 @@
 // 1. Be assigned to a variable.
 
 let max a b = if a > b then a else b
+// int->int->int
+
 let remainder dividend divisor = dividend % divisor
+// int->int->int
 
 let f = max
 // f is a *variable*. What is its type?
+// int->int->int
 
 // What can we do with a function variable? Call it!
 f 10 5 |> printfn "%d is the max"
@@ -32,6 +36,8 @@ let selectIntFunction a =
     else
         remainder
 
+// int->(int->int->int)
+
 // What type is selectIntFunction?
 
 // Putting it together...
@@ -39,6 +45,12 @@ let selectIntFunction a =
 |> selectIntFunction
 |> useIntegers 5 4
 |> printfn "result: %d"
+
+
+
+
+
+
 
 
 // 4. Be created dynamically at run-time.

@@ -2,9 +2,9 @@
 #include <stdbool.h>
 
 struct Element {
-	char name[2];  // char = 1byte  -> 2byte
-	int atomic_number; // 4 byte
 	double atomic_weight; // 8 byte
+	int atomic_number; // 4 byte
+	char name[2];  // char = 1byte  -> 2byte
 	bool metallic; // 1 byte
 };
 
@@ -18,7 +18,6 @@ int main() {
 	gold.metallic = true;
 
 	printf("Element struct is %d bytes\n", sizeof(struct Element));
-
 	printf("gold is at \t%p\n\n", &gold);
 
 	printf("name: \t\t%p; \nnumber: \t%p; \nweight: \t%p; \nmetallic: \t%p\n",

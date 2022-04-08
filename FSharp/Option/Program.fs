@@ -32,15 +32,21 @@ match divideInts 10 0 with
 
 
 // How is this different than null?
-let uninit = None
-// The next line fails, because the value "uninit" is None, and None is not a string 
-// as expected by lookupId:
+// Because we get compiler warnings/errors if we are given an option variable and don't
+// have a match case to deal with it.
 
-// lookupId uninit |> printfn "%d"
+open System
 
-// which protects against passing nulls to functions that need actual values.
+// Let's expand our math interpreter with a Log case, taking an optional base for the logarithm.
+type Expression = 
+    | Const of float
+    | Add of Expression * Expression
+    | Sub of Expression * Expression
+    | Log of Expression * Expression option // the base is the second argument. If None, implies base "e".
 
-// If a function is ok with uninitialized values, it can take an option as a parameter:
-let lookupIfValid = function
-    | None -> None
-    | Some n -> lookupId n
+let rec evaluate expr =
+    match expr with 
+    | Const c -> c
+    | Add (expr1, expr2) -> (evaluate expr1) + (evaluate expr2)
+    | Sub (expr1, expr2) -> (evaluate expr1) - (evaluate expr2)
+    
