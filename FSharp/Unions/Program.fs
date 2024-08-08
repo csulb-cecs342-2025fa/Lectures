@@ -129,7 +129,7 @@ let rec findMaxValue tree =
     match tree with
     | Empty              -> System.Int32.MinValue
     | Node (i, _, Empty) -> i
-    | Node (_, _, right) -> findMax right
+    | Node (_, _, right) -> findMaxValue right
 
 let rec treeContains v tree =
     match tree with
