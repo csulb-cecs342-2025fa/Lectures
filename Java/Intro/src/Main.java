@@ -10,7 +10,6 @@ public class Main {
       // Why don't we use "new" with this int variable?
       
       List<Integer> myList;
-      // Why "Integer" and not "int"?
       
       
       // Where are these objects placed in memory? Why?
