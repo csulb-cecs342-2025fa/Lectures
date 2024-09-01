@@ -35,17 +35,16 @@ let square x =
 let annualInterest principal rate numYears =
     principal * ((1.0 + rate) ** (float numYears))
 
-// float -> float -> float -> float
-
-// arithmetic can only be done on two values of the exact same type
-
-  
 
 // What types are the three parameters? Infer it based on the body of the function.
 
 
-// The type of "interest" is float -> float -> int -> float; a function taking a float, float,
-// and int; and returning float.
+
+
+// What type is annualInterest?
+
+
+
 
 
 // Convert Fahrenheit degrees to Celcius
@@ -82,10 +81,10 @@ let absoluteValue x =
 // indent from top to bottom. But it's good practice, like Python's "if __name__ == '__main__'"
 [<EntryPoint>]
 let main argv = 
-    printfn "5 squared is %d" (square 5)
+    printfn $"5 squared is {square 5}"
     
-    printfn "$10,000 after 10 years at 0.01%% interest yields %0.2f" (annualInterest 10000.0 0.0001 10) 
+    printfn $"$10,000 after 10 years at 0.01%% interest yields %0.2f{annualInterest 10000.0 0.0001 10}" 
 
-    printfn "90 degrees F = %0.1f degrees C" (toCelcius 90.0)    
+    printfn $"90 degrees F = %0.1f{toCelcius 90.0} degrees C"    
 
     0 // return an integer exit code
