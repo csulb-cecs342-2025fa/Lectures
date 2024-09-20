@@ -9,8 +9,6 @@
 printfn "Hello world."
 printfn "Welcome to F#!"
 // printfn takes printf-style arguments (from C)
-printfn "%d is an integer" 10
-// Most useful: %d for int, %f for double, %s for string
 
 // Note that we haven't defined a "main" method. Like most "scripting" languages, F# files execute 
 // from top to bottom.
@@ -46,7 +44,7 @@ let f2 = (float x) * 1.5
 
 // The funny thing about F# variables is that they are immutable.
 x = 100
-printfn "x is now %d" x // what does this print?
+printfn $"x is now {x}" // what does this print?
 
 // Outside of a declaration, = is used for comparison; it is not for assignment.
 // F# variables cannot be assigned new values after they are declared...
@@ -66,5 +64,5 @@ else
 // How does one have a while loop without mutable values? So let's introduce those too.
 let mutable i = 0
 while i < 10 do
-    printfn "%d" i
+    printfn $"{i}"
     i <- i + 1 // <- is for reassignment / mutation
