@@ -1,15 +1,32 @@
 ﻿// Tail recursion.
 
-
-let rec fact n =
+// A classic recursive function: factorial(n) = n * factorial(n-1)
+let rec factorial n =
     match n with 
     | 1 -> 1
-    | _ -> n * fact (n - 1)
+    | _ -> n * factorial (n - 1)
 
-let rec factTail n acc =
-    match n with 
-    | 1 -> acc
-    | _ -> factTail (n - 1) (n * acc)
+
+
+// Tail-recursive implementation of factorial.
+// The typical tail recursive function introduces another parameter to the recursion.
+// We don't want to bother other programmers with this knowledge, so we "hide" the parameter
+// an inner function that we start ourselves.
+let factorialTail n =
+    // The parameter we introduce is called an "accumulator". It represents "the answer to the question prior to this iteration.";
+    // AKA, "what have we already concluded about the values that came before?"
+    // In factorial, acc is the product of all the numbers that came "before" n in the sequence
+    let rec factorialTail' n acc =
+        match n with 
+        // If n == 1, then acc is the product of all the numbers that came before 1, so acc is the actual answer.
+        | 1 -> acc
+        // Otherwise, multiply n by acc to form the new acc, and do a tail call on the next number in the sequence.
+        | _ -> factorialTail' (n - 1) (n * acc)
+
+    // With the inner function declared, the outer function then "kicks off" the recursion
+    // by providing a value for the accumulator that is the answer to the base case.
+    // When n = 1, factorial n = 1, so the accumulator starts at 1.
+    factorialTail' n 1
 
 
 
@@ -29,28 +46,17 @@ let rec sumList coll =
 
 
 // sumListTail: a tail-recursive implementation.
-// The typical tail recursive function introduces another parameter to the recursion.
-// We don't want to bother other programmers with this knowledge, so we "hide" the parameter
-// an inner function that we start ourselves.
 
 let sumListTail coll =
-
-
-    // The parameter we introduce is called an "accumulator". It represents "the answer to the question prior to this iteration.";
-    // AKA, "what have we already concluded about the values that came before?"
-    // In this case, acc is "the sum of the elements that we already iterated over."
+    // acc is "the sum of the elements that we already iterated over."
     let rec sumListTail' coll acc =
         match coll with 
-        | [] -> acc   // if we've already iterated over the entire list, then the final sum of the list
-                      // is equal to the accumulator, which is "the sum of the elements that we already iterated over".
+        // If we've reached the end of the list, then acc holds the sum of all elements that came before the end.
+        | [] -> acc
+        // Otherwise, the sum of prior elements plus the current head becomes the new sum of everything before the tail.
         | h :: t -> sumListTail' t (h + acc)
-                      // otherwise, we recurse to the next iteration.
-                      // we add h + acc to find the sum of the elements up to and including the current one.
-                      // that becomes the new accumulator to use when summing the tail of the list.
-                    
-    // With the inner function declared, the outer function then "kicks off" the recursion
-    // by providing a value for the accumulator that represents "the answer to the question when no work has been done."
-    // If we haven't examined any values in the list, the answer to "sumList" is 0.
+                 
+    // The sum of the empty list is 0.    
     sumListTail' coll 0
 
 
@@ -64,17 +70,17 @@ let rec count x coll =
     | _ :: t            -> count x t
 
 let countTail x coll =
-    
-    // Start by defining the accumulator: acc represents the number of x values that come before this point.
+    // acc is the number of occurrences of x found earlier in the list.
     let rec countTail' x coll acc =
         match coll with 
+        // acc is *all* occurrences of x earlier in the list.
         | [] -> acc
+        // if h equals x, then (acc + 1) is the number of occurrences of x that came before the tail.
         | h :: t when h = x -> countTail' x t (acc + 1)
+        // otherwise, acc is the number of occurrences of x that came before the tail.
         | _ :: t            -> countTail' x t acc
 
-        // Then match coll and decide what to do...
-
-    // Then initialize the recursion with the correct starting accumulator.
+    // The empty list has 0 occurrences of x.
     countTail' x coll 0
 
 // Determine the index of the first occurrence of x.
@@ -100,14 +106,20 @@ let rec reverse coll =
     match coll with 
     | [] -> []
     | [x] -> [x]
-    | h :: t -> reverse t @ [h]
-
+    | h :: t -> reverse t @ [h] // @ is "append"
 
 let reverseTail coll =
-    // acc represents...
+    // acc represents the reverse of the list that came before.
     let rec reverseTail' coll acc = 
-        0
-    0
+        match coll with 
+        // acc is the reverse of the entire list.
+        | [] -> acc
+        // h must come immediately *before* the reverse of the list that came before it;
+        // so h followed by acc is the new "reverse of the list that came before t".
+        | h :: t -> let newAcc = h :: acc
+                    reverseTail' t newAcc
+
+    reverseTail' coll []
 
 // Hardest yet:
 // Find all the even integers in a list.
@@ -117,3 +129,12 @@ let rec findEvens coll =
     | h :: t when h % 2 = 0 -> h :: findEvens t
     | _ :: t -> findEvens t
 
+
+let mapTail transform coll =
+    let rec mapTail' transform coll acc =
+        match coll with 
+        | [] -> acc
+        | h :: t -> let newHead = transform h
+                    mapTail' transform t (acc @ [newHead])
+
+    mapTail' transform coll []
