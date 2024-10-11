@@ -8,14 +8,9 @@
 // one or more operands that are expressions.
 type Expression = 
     | Const of float
-    | Add of addend : Expression * augend: Expression
-    | Sub of minuend : Expression * subtrahend : Expression
+    | Add of Expression * Expression
+    | Sub of Expression * Expression
 
-with 
-    static member (+) (exp1, exp2) = 
-        Add (exp1, exp2)
-
-let whoa = Console.ReadLine() |> float
    
 // evaluate converts an Expression object into the floating-point number it represents.
 let rec evaluate expr =
@@ -25,8 +20,8 @@ let rec evaluate expr =
     | Sub (expr1, expr2) -> (evaluate expr1) - (evaluate expr2)
 
 // Ugly print the expression.
-let demo1 = Sub (Const 10 + Const 3, Const 2)
-printfn "%O" demo1
+let demo1 = Sub (Add (Const 10, Const 3), Const 2)
+printfn $"{demo1}"
 
 // Evaluate and print the expression.
 demo1

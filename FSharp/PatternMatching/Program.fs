@@ -5,7 +5,7 @@ let equalsOne x =
     else 
         false
 
-printfn "%O" (equalsOne 10) // %O is for any objet; prints false.
+printfn $"{equalsOne 10}" // %O is for any objet; prints false.
 // This syntax is unwieldy. When we have a pattern of "if this thing matches this pattern, then do this",
 // we can use a special syntax.
 
@@ -14,7 +14,7 @@ let equalsTwo x =
     | 2 -> true
     | _ -> false // _ means "match anything"
 
-printfn "%O" (equalsTwo 2) // prints true
+printfn $"{equalsTwo 2}" // prints true
 
 
 // Works with strings too

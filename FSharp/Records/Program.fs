@@ -22,7 +22,6 @@ let vecLat2 = csulb.lat
 
 // We can write functions on records, naturally.
 let hemisphereNS geo =
-    // let { lat = lat1 } = geo
     if geo.lat > 0.0 then
         "Northern"
     elif geo.lat < 0.0 then

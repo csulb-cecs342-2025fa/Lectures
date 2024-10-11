@@ -16,20 +16,12 @@
 type Contact =
     | Email of string
     | Phone of int64
-    | MailingAddress of string
-    | PhoneExt of number : int64 * extension : int 
-
-let example = PhoneExt (12345L, 9999)
 
 // Values of type Contact are constructed by specifying one of the two
 // possible cases and providing a value. Each case is called a "type constructor".
 
-let anthony = Email "anthony.g@csulb.edu"
+let anthony = Email "anthony.g@csulb.edu" // anthony is an object of the Email case of the Contact type.
 let burkhard = Phone 5629855555L
-let neal = MailingAddress "Nice try"
-
-
-// Both of these variables are of type Contact. One is a string, one is an int64.
 
 // But how do we deal with such variables if we don't know which of the cases
 // they correspond with? I can't attempt to read the Email of burkhard, or the
@@ -39,13 +31,12 @@ let neal = MailingAddress "Nice try"
 let howToContact contact =
     match contact with
     | Email e -> $"Email them at {e}"
-    | Phone p -> sprintf "Call them at %d" p
-    | MailingAddress m -> $"Mail them at {m}"
+    | Phone p -> $"Call them at {p}"
 
 // REMINDER: this is the same as the shortcut function:
 
-howToContact anthony |> printfn "%s"
-howToContact burkhard |> printfn "%s"
+printfn "${howToContact anthony}"
+printfn $"{howToContact burkhard}"
 
 // This is the only way to interact with unions: by matching their constructor
 // to gain access to the associated field and deal with that.
