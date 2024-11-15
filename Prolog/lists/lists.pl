@@ -1,3 +1,5 @@
+isEmpty([]).
+
 % Check if a list contains the given value.
 contains([X|_], X).
 contains([_|T], X) :- contains(T, X).
