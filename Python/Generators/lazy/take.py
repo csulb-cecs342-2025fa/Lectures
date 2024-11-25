@@ -7,18 +7,18 @@ class TakeGenerator[T](Iterable[T]):
         self._count = count
         self._source = sequence
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         return TakeGenerator.TakeIterator(self._count, iter(self._source))
     
     # The TakeIterator returns the next element from the source sequence, but
     # only until we've returned as many items as we wanted to take.
-    class TakeIterator[T]:
+    class TakeIterator[T](Iterator[T]):
         def __init__(self, count : int, iterator : Iterator[T]):
             self._iterator = iterator
             self._taken = 0
             self._count = count
 
-        def __next__(self):
+        def __next__(self) -> T:
             if self._taken >= self._count:
                 raise StopIteration
 

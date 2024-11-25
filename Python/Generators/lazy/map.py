@@ -13,12 +13,12 @@ class MapGenerator[TData, TResult](Iterable[TResult]):
 
     # The MapIterator returns the next element from the source sequence, after it is
     # passed to the transform function.  
-    class MapIterator[T]:
-        def __init__(self, transform : Callable[[TData], TResult], iterator : Iterator[T]):
+    class MapIterator[TData, TResult](Iterator[TResult]):
+        def __init__(self, transform : Callable[[TData], TResult], iterator : Iterator[TData]):
             self._transform = transform
             self._iterator = iterator
 
-        def __next__(self):
+        def __next__(self) -> TResult:
             # Calling next() on our iterator will raise StopIteration if 
             # the source iterator is exhausted, stopping the map iteration correctly.
             print("Mapping:")
@@ -26,4 +26,3 @@ class MapGenerator[TData, TResult](Iterable[TResult]):
             t = self._transform(n)
             print(f"Mapped: {n} -> {t}")
             return t
-
