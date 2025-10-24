@@ -1,12 +1,14 @@
 ﻿// Inner functions can use any variable that is visible in the outer scope.
-let fold combiner initial coll =
-    let rec foldImpl coll acc =
-        match coll with
-        | [] -> acc
-        // we can use combiner even though it's not a parameter to foldImpl
-        | h :: t -> foldImpl t (combiner acc h)
+let filter predicate coll =
+    let rec filter' coll acc =
+        match coll with 
+        | [] -> List.rev acc
+        // We can use the "predicate" parameter even though it's not a 
+        // parameter to filter'.
+        | h :: t when predicate h = true -> filter' t (h :: acc)
+        | _ :: t                         -> filter' t acc
 
-    foldImpl (List.tail coll) initial
+    filter' coll []
 
 
 // return true if a value larger than x is in coll.
@@ -24,12 +26,14 @@ let getAdder x =
     (fun y -> y + z)
 
 // First: what type is getAdder?
-// int->(int->int)
+
+
+
 
 // When we call getAdder 10, we conceptually get back: a function that adds 20 to its parameter.
 let adderFunc = getAdder 10
 // What type is adderFunc?
-// int->int
+
 
 // We can invoke that function:
 adderFunc 5 
@@ -58,7 +62,6 @@ let getAdder2 x =
 let adderFunc2 = getAdder2 10
 adderFunc2 5
 |> printfn "%d" // what gets printed? 25, or 55?
-// 55!
 
 
 
