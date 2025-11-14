@@ -1,15 +1,16 @@
 % Simple facts.
-
-?- sibling(jolteon, X).
 number(pikachu, 25).
-evolves(pikachu, raichu).
-evolves(charmander, charmeleon).
-evolves(charmeleon, charizard).
-evolves(eevee, jolteon).
-evolves(eevee, flareon).
-evolves(eevee, vaporeon).
+evolves(kadabra, alakazam, trade).
+evolves(kadabra, alakazam, item(linkingcord)).
 
 % Slightly more complex facts.
+evolves_by(pichu, raichu, friendship(high)).
+evolves_by(pikachu, raichu, item(thunderstone)).
+evolves_by(charmander, charmeleon, level(16)).
+evolves_by(charmeleon, charizard, level(32)).
+evolves_by(eevee, jolteon, item(thunderstone)).
+evolves_by(eevee, flareon, item(firestone)).
+evolves_by(eevee, vaporeon, item(waterstone)).
 
 move(thunderbolt, electric, special, 90).
 move(thunderpunch, electric, physical, 75).
@@ -18,10 +19,11 @@ learns(pikachu, thunderpunch, tm(5)).    % Pikachu learns Thunderpunch by using 
 
 
 % Simple rules.
-
-sibling(X, Y) :- evolves(Parent, X), evolves(Parent, Y), X \= Y. % the comma means "and". "\=" means "does not unify".
+evolves(X, Y) :- evolves_by(X, Y, _).
+sibling(X, Y) :- evolves_by(Parent, X, _), evolves_by(Parent, Y, _), X \= Y. % the comma means "and". "\=" means "does not unify".
 
 canUseItem(Pokemon, tm(X)) :- learns(Pokemon, _, tm(X)). % _ is "don't care", yet again.
+canUseItem(Pokemon, X) :- evolves_by(X, _, item(X)).
 
 
 % A rule with multiple clauses.
@@ -190,3 +192,11 @@ immune_to(dragon, fairy).
 immune_to(psychic, dark).
 immune_to(flying, ground).
 immune_to(steel, poison).
+
+damage(AttackType, DefendType, 0.0) :- immune_to(DefendType, AttackType).
+damage(AttackType, DefendType, 2.0) :- weak_to(DefendType, AttackType).
+damage(AttackType, DefendType, 0.5) :- resists(DefendType, AttackType).
+damage(AttackType, DefendType, 1.0) :-
+	\+ immune_to(DefendType, AttackType),
+	\+ weak_to(DefendType, AttackType),
+	\+ resists(DefendType, AttackType).
