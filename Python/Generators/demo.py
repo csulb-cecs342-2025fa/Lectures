@@ -1,7 +1,16 @@
 from lazy import *
 
 if __name__ == "__main__":
-    seq = range(2, 100000, 1)
+    for i in take(100, range(101, 1000000000000000000000000000000000000000000, 1)):
+        print(i)
+
+
+    exit(0)
+
+
+
+
+
     odds = filter(lambda x: x % 2 == 1, seq)
     firstFive = take(5, odds)
     squares = map(lambda x: x * x, firstFive)

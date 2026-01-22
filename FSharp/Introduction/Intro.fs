@@ -57,11 +57,3 @@ elif age < 40 then
     printfn "You are getting older..."
 else
     printfn "You old"
-
-
-// while loops
-// How does one have a while loop without mutable values? So let's introduce those too.
-let mutable i = 0
-while i < 10 do
-    printfn "%d" i
-    i <- i + 1 // <- is for reassignment / mutation

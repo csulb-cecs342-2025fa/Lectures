@@ -4,7 +4,7 @@ evolves(kadabra, alakazam, trade).
 evolves(kadabra, alakazam, item(linkingcord)).
 
 % Slightly more complex facts.
-evolves_by(pichu, raichu, friendship(high)).
+evolves_by(pichu, pikachu, friendship(high)).
 evolves_by(pikachu, raichu, item(thunderstone)).
 evolves_by(charmander, charmeleon, level(16)).
 evolves_by(charmeleon, charizard, level(32)).
@@ -23,12 +23,12 @@ evolves(X, Y) :- evolves_by(X, Y, _).
 sibling(X, Y) :- evolves_by(Parent, X, _), evolves_by(Parent, Y, _), X \= Y. % the comma means "and". "\=" means "does not unify".
 
 canUseItem(Pokemon, tm(X)) :- learns(Pokemon, _, tm(X)). % _ is "don't care", yet again.
-canUseItem(Pokemon, X) :- evolves_by(X, _, item(X)).
+canUseItem(Pokemon, X) :- evolves_by(Pokemon, _, item(X)).
 
 
 % A rule with multiple clauses.
-descendent(X, Y) :- evolves(Y, X).
-descendent(X, Y) :- evolves(Y, Z), descendent(X, Z). % This one is recursive!!
+descendent(X, Y) :- evolves_by(Y, X, _).
+descendent(X, Y) :- evolves_by(Y, Z, _), descendent(X, Z). % This one is recursive!!
 
 
 
