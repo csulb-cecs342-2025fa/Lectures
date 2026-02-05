@@ -14,6 +14,7 @@ let square x =
 
 // If the context is unclear, then other hints may be needed.
 
+let xyz = square 5
 
 // What can I DO with a function?
 // call!
@@ -80,7 +81,7 @@ let absoluteValue x =
 // indent from top to bottom. But it's good practice, like Python's "if __name__ == '__main__'"
 [<EntryPoint>]
 let main argv = 
-    printfn "5 squared is %d" (square 5)
+    printfn $"5 squared is {square 5}" 
     
     printfn "$10,000 after 10 years at 0.01%% interest yields %0.2f" (annualInterest 10000.0 0.0001 10) 
 

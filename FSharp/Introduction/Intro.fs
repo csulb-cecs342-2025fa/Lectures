@@ -53,7 +53,7 @@ let age = 37
 // if, elif, else statements
 if age < 10 then
     printfn "You are young"
-elif age < 40 then
+elif age < 43 then
     printfn "You are getting older..."
 else
     printfn "You old"

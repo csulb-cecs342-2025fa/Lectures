@@ -24,7 +24,16 @@ let getPrice food =
     | "watermelon" -> 3.49
     | "tofu" -> 1.09
     | _ -> nan
+let x = 5
+x = 10
 
+let rec whilePrint x =
+    match x with 
+    | 5 -> ()
+    | n -> printfn $"{n}"
+           whilePrint (n + 1)
+
+whilePrint 0
 
 
 // We can do lots of complicated functions using pattern matching instead of nested if-elifs.

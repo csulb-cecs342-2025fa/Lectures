@@ -56,3 +56,6 @@ if success then
 let (success2, value2) = tryParseInt "99x"
 if success2 then
     printfn "We then parsed the value %d" value2
+
+
+// Next: records!
