@@ -8,58 +8,58 @@
 // must have only ONE of many individual values to construct a value of the
 // new additive type. Additive types in F# are called discriminated unions.
 
-// Suppose I want to represent a "contact", where a contact can either be
-// a phone number (int64) or an email address (string).
-// I could make a record with two fields, but then BOTH fields have to be set
-// to constuct a contact. A better means is with a union.
+// Suppose I want to represent a "Shape", where a Shape can either be
+// a Rectangle, a Circle, or a Triangle. I could do this with records, but then
+// I would have to have fields for all the possible shapes, and only one of
+// them would be filled in at a time, which is a bit wasteful and awkward. With
+// a discriminated union, I can just say that a Shape is either a Rectangle, a Circle,
+// or a Trapezoid, and then I can give each of those cases the fields that they
+// need, without having to worry about the other cases.
 
-type Contact =
-    | Email of string
-    | Phone of int64
+type Shape =
+    | Rectangle of width: float * height: float
+    | Circle of radius: float
+    | Trapezoid of base1: float * base2: float * height: float
 
-// Values of type Contact are constructed by specifying one of the two
+// Values of type Shape are constructed by specifying one of the three
 // possible cases and providing a value. Each case is called a "type constructor".
+let r = Rectangle (10.0, 20.0)
+let c = Circle 5.0
+let t = Trapezoid (10.0, 20.0, 5.0)
 
-let anthony = Email "anthony.g@csulb.edu" // anthony is an object of the Email case of the Contact type.
-let burkhard = Phone 5629855555L
+// If we examine the types of these names, we see they are only known to be of type Shape,
+// not Rectangle, Circle, or Trapezoid. That can make it awkward to work with them,
+// because we (the compiler) don't know which of the three cases they correspond with.
 
-// But how do we deal with such variables if we don't know which of the cases
-// they correspond with? I can't attempt to read the Email of burkhard, or the
-// Phone of anthony, because those things don't exist. Pattern matching to the
-// rescue!
+// let w = r.width // error: no field "width" on type "Shape"
 
-let howToContact contact =
-    match contact with
-    | Email e -> $"Email them at {e}"
-    | Phone p -> $"Call them at {p}"
+// The way to work with union values is with pattern matching. 
+// Take a Shape object, and match it against each of the possible cases.
+// Whatever case it matches, implement some logic specific to that case.
+let areaOfShape s =
+    match s with 
+    | Rectangle (w, h) -> w * h
+    | Circle r -> Math.PI * r * r
+    | Trapezoid (b1, b2, h) -> (b1 + b2) * h / 2.0
 
-// REMINDER: this is the same as the shortcut function:
-
-printfn "${howToContact anthony}"
-printfn $"{howToContact burkhard}"
+printfn $"Area of r: {areaOfShape r}" // output == ???
 
 // This is the only way to interact with unions: by matching their constructor
 // to gain access to the associated field and deal with that.
-// The nice part? If we add a new constructor, say "Address of string"...
+// The nice part? If we add a new constructor, say "Triangle of float * float"...
+type Shape2 =
+    | Rectangle of width: float * height: float
+    | Circle of radius: float
+    | Trapezoid of base1: float * base2: float * height: float
+    | Triangle of baseLength: float * height: float
 
 // we now get warnings that we aren't dealing with every case of the union,
 // which will help us avoid bugs and oversights in the code.
-
-
-// Not all type constructors require a value; some can be empty.
-type SubmissionResult = 
-    | Accepted
-    | RejectMessage of string
-
-let submitWork effortLevel =
-    if effortLevel >= 0.8 then
-        Accepted
-    else
-        RejectMessage "work harder, you lazy bum"
-
-match submitWork 0.7 with
-| Accepted -> printfn "%s" "Work was accepted!"
-| RejectMessage m -> printfn "Work was rejected: %s" m
+let areaOfShape2 (s : Shape2) =
+    match s with  // WARNING: INCOMPLETE PATTERN MATCH, MISSING CASE Triangle 
+    | Rectangle (w, h) -> w * h
+    | Circle r -> Math.PI * r * r
+    | Trapezoid (b1, b2, h) -> (b1 + b2) * h / 2.0
 
 
 // Unions can cleanly and beautifully represent computations that can fail.
@@ -78,13 +78,11 @@ let safeDivide dividend divisor =
 
 let good = safeDivide 10 3 // good = Quotient 3
 let bad = safeDivide 10 0  // bad  = Undefined
+// This protects us from using a quotient that is undefined, because we must have
+// separate match cases for a good result vs a bad result:
 match bad with 
 | Undefined -> printf "That division failed"
-| Quotient q -> printf "That division succeed and equals %d" q
-
-
-
-
+| Quotient q -> printf $"That division succeed and equals {q}"
 
 
 
